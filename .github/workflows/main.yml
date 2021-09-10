@@ -1,0 +1,16 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+env:
+  RCLONE_CONFIG_URL: ${{ secrets.RCLONE_CONFIG_URL }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Full Script
+        run: |
+          curl -sL https://github.com/rokibhasansagar/ff_builder/raw/main/script.sh | bash
