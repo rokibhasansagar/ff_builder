@@ -5,6 +5,29 @@ sudo mkdir -p /opt/ffmpeg_build
 sudo chmod 777 /opt/ffmpeg_build -R
 sudo chown runner:docker /opt/ffmpeg_build -R
 
+# Update Apt-cache
+sudo apt-fast update -qy
+
+# Change GCC Version to 10
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 90
+sudo update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-10 100
+sudo update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-9 90
+sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-10 100
+sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-9 90
+sudo update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-10 100
+sudo update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-9 90
+sudo update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-10 100
+sudo update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-9 90
+sudo update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-10 100
+sudo update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-9 90
+sudo update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-10 100
+sudo update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-9 90
+sudo update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-10 100
+sudo update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-9 90
+
 # Install rclone
 curl -sL git.io/Rclone4fr3aky.sh | bash
 
@@ -12,7 +35,7 @@ curl -sL git.io/Rclone4fr3aky.sh | bash
 cd /opt/ffmpeg_build
 curl -sL https://github.com/rokibhasansagar/ffmpeg-build-script/raw/update3/build-ffmpeg -O
 chmod a+x build-ffmpeg
-sudo apt-get -qy install \
+sudo apt-fast -qy install \
   build-essential curl ca-certificates libva-dev libdrm-dev python3 python-is-python3 libtool \
   intel-microcode intel-gpu-tools intel-opencl-icd intel-media-va-driver opencl-headers \
   libwayland-dev mesa-va-drivers mesa-vdpau-drivers mesa-vulkan-drivers mesa-utils mesa-utils-extra \
