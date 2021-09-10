@@ -28,8 +28,10 @@ sudo update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-9 90
 sudo update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-10 100
 sudo update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-9 90
 echo "::endgroup::"
-# Install rclone
+
+echo "::group:: Install rclone"
 curl -sL git.io/Rclone4fr3aky.sh | bash
+echo "::endgroup::"
 
 cd /opt/ffmpeg_build
 curl -sL https://github.com/rokibhasansagar/ffmpeg-build-script/raw/update3/build-ffmpeg -O
@@ -46,10 +48,15 @@ echo "::group:: Build ffmpeg"
 NUMJOBS=8 SKIPINSTALL=yes ./build-ffmpeg --build --enable-gpl-and-non-free --full-static
 echo "::endgroup::"
 
-echo "::group:: Check Binaries"
+echo "::group:: Check Workspace and Binaries"
+ls -lAog ./workspace/*
+echo "::endgroup::"
+
+echo "::group:: Check Configs"
 ./workspace/bin/ffmpeg -hide_banner -buildconf
 ./workspace/bin/x265 -V || true
 ./workspace/bin/ffmpeg -hide_banner -h encoder=libx265
+echo "::endgroup::"
 
 echo "::group:: Upload"
 rclone delete td:/ffmpeg_testBuilds/ --progress || true
