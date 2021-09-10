@@ -6,9 +6,9 @@ sudo chmod 777 /opt/ffmpeg_build -R
 sudo chown runner:docker /opt/ffmpeg_build -R
 
 # Update Apt-cache
-sudo apt-fast update -qy
+sudo apt-fast update -qqy
 
-# Change GCC Version to 10
+echo "::group:: Change GCC Version to 10"
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
@@ -27,27 +27,33 @@ sudo update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-10 100
 sudo update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-9 90
 sudo update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-10 100
 sudo update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-9 90
-
+echo "::endgroup::"
 # Install rclone
 curl -sL git.io/Rclone4fr3aky.sh | bash
 
-# Build ffmpeg
 cd /opt/ffmpeg_build
 curl -sL https://github.com/rokibhasansagar/ffmpeg-build-script/raw/update3/build-ffmpeg -O
 chmod a+x build-ffmpeg
-sudo apt-fast -qy install \
+echo "::group:: Prepare ffmpeg dependencies"
+sudo apt-fast -qqy install \
   build-essential curl ca-certificates libva-dev libdrm-dev python3 python-is-python3 libtool \
   intel-microcode intel-gpu-tools intel-opencl-icd intel-media-va-driver opencl-headers \
   libwayland-dev mesa-va-drivers mesa-vdpau-drivers mesa-vulkan-drivers mesa-utils mesa-utils-extra \
   libglx-dev libgl1-mesa-glx libgl1-mesa-dev
+echo "::endgroup::"
+
+echo "::group:: Build ffmpeg"
 NUMJOBS=8 SKIPINSTALL=yes ./build-ffmpeg --build --enable-gpl-and-non-free --full-static
+echo "::endgroup::"
 
-# Check Binary
+echo "::group:: Check Binaries"
 ./workspace/bin/ffmpeg -hide_banner -buildconf
-./workspace/bin/ffmpeg -hide_banner -hwaccels
+./workspace/bin/x265 -V || true
+./workspace/bin/ffmpeg -hide_banner -h encoder=libx265
 
-# Upload
+echo "::group:: Upload"
 rclone delete td:/ffmpeg_testBuilds/ --progress || true
 for i in ffmpeg ffplay ffprobe; do
   rclone copy ./workspace/bin/${i} td:/ffmpeg_testBuilds/ --progress
 done
+echo "::endgroup::"
