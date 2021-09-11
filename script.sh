@@ -55,8 +55,8 @@ echo "::endgroup::"
 
 echo "::group:: Check Configs"
 ./workspace/bin/ffmpeg -hide_banner -buildconf
-./workspace/bin/x265 -V || true
-./workspace/bin/ffmpeg -hide_banner -h encoder=libx265
+echo
+./workspace/bin/ffmpeg -hide_banner -encoders
 echo "::endgroup::"
 
 echo "::group:: Upload"
