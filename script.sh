@@ -62,15 +62,22 @@ for i in ./workspace/bin/*; do
 done
 echo "::endgroup::"
 
+[[ -f ./workspace/bin/ffmpeg ]] || exit 1
+
 echo "::group:: Check Configs"
+./workspace/bin/x265 -V
+echo
 ./workspace/bin/ffmpeg -hide_banner -buildconf
 echo
 ./workspace/bin/ffmpeg -hide_banner -encoders
+echo
+./workspace/bin/ffmpeg -hide_banner -h encoder=libx265
+echo
 echo "::endgroup::"
 
 echo "::group:: Upload"
 rclone delete td:/ffmpeg_testBuilds/ --progress || true
-for i in ffmpeg ffplay ffprobe; do
+for i in ffmpeg ffplay ffprobe x264 x265; do
   rclone copy ./workspace/bin/${i} td:/ffmpeg_testBuilds/ --progress
 done
 echo "::endgroup::"
