@@ -43,6 +43,7 @@ sudo apt-fast -qqy install \
   libwayland-dev mesa-va-drivers mesa-vdpau-drivers mesa-vulkan-drivers mesa-utils mesa-utils-extra \
   libglx-dev libgl1-mesa-glx libgl1-mesa-dev ninja-build yasm nasm xmlto asciidoc
 sudo -EH pip3 install meson
+cargo install cargo-c
 echo "::endgroup::"
 
 echo "::group:: Build ffmpeg"
