@@ -38,10 +38,11 @@ curl -sL https://github.com/rokibhasansagar/ffmpeg-build-script/raw/update3/buil
 chmod a+x build-ffmpeg
 echo "::group:: Prepare ffmpeg dependencies"
 sudo apt-fast -qqy install \
-  build-essential curl ca-certificates libva-dev libdrm-dev python3 python-is-python3 libtool \
+  build-essential cmake m4 libtool make automake curl ca-certificates libva-dev libnuma-dev libdrm-dev python-is-python3 \
   intel-microcode intel-gpu-tools intel-opencl-icd intel-media-va-driver opencl-headers \
   libwayland-dev mesa-va-drivers mesa-vdpau-drivers mesa-vulkan-drivers mesa-utils mesa-utils-extra \
-  libglx-dev libgl1-mesa-glx libgl1-mesa-dev
+  libglx-dev libgl1-mesa-glx libgl1-mesa-dev ninja-build yasm nasm xmlto asciidoc
+sudo -EH pip3 install meson
 echo "::endgroup::"
 
 echo "::group:: Build ffmpeg"
