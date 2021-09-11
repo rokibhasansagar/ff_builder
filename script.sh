@@ -38,8 +38,8 @@ curl -sL https://github.com/rokibhasansagar/ffmpeg-build-script/raw/update3/buil
 chmod a+x build-ffmpeg
 echo "::group:: Prepare ffmpeg dependencies"
 sudo apt-fast -qqy install \
-  build-essential cmake m4 libtool make automake curl ca-certificates libva-dev libnuma-dev libdrm-dev python-is-python3 \
-  intel-microcode intel-gpu-tools intel-opencl-icd intel-media-va-driver opencl-headers \
+  build-essential cmake m4 libtool make automake curl ca-certificates libva-dev libvdpau-dev libmfx-dev libnuma-dev libdrm-dev \
+  intel-microcode intel-gpu-tools intel-opencl-icd intel-media-va-driver ocl-icd-opencl-dev opencl-headers \
   libwayland-dev mesa-va-drivers mesa-vdpau-drivers mesa-vulkan-drivers mesa-utils mesa-utils-extra \
   libglx-dev libgl1-mesa-glx libgl1-mesa-dev ninja-build yasm nasm xmlto asciidoc
 sudo -EH pip3 install meson
@@ -51,6 +51,14 @@ echo "::endgroup::"
 
 echo "::group:: Check Workspace and Binaries"
 ls -lAog ./workspace/*
+echo "::endgroup::"
+
+echo "::group:: Check Configs"
+for i in ./workspace/bin/*; do
+  printf "Checking Shared Library for %s..\n" "${i}"
+  ldd ${i}
+  printf "\n"
+done
 echo "::endgroup::"
 
 echo "::group:: Check Configs"
